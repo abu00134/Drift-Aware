@@ -1,0 +1,62 @@
+{
+  "name": "Drift-Aware Monitor",
+  "description": "A comprehensive drift monitoring system for machine learning models",
+  "repository": "https://github.com/abu00134/Drift-Aware",
+  "logo": "https://cdn.jsdelivr.net/gh/abu00134/Drift-Aware/assets/logo.png",
+  "keywords": ["machine-learning", "drift-detection", "monitoring", "prometheus", "postgresql", "ai"],
+  "stack": "container",
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0"
+    }
+  ],
+  "env": {
+    "CHECK_INTERVAL_SECONDS": {
+      "description": "How often to run drift checks (in seconds)",
+      "value": "900"
+    },
+    "EMBEDDING_DIM": {
+      "description": "Embedding dimension (default for OpenAI text-embedding-ada-002)",
+      "value": "1536"
+    },
+    "EMBEDDING_COSINE_THRESHOLD": {
+      "description": "Embedding drift threshold (0.0-1.0)",
+      "value": "0.1"
+    },
+    "REFUSAL_RATE_THRESHOLD": {
+      "description": "Maximum acceptable refusal rate (0.0-1.0)",
+      "value": "0.05"
+    },
+    "TOXICITY_RATE_THRESHOLD": {
+      "description": "Maximum acceptable toxicity rate (0.0-1.0)",
+      "value": "0.02"
+    },
+    "ACCURACY_DROP_POINTS": {
+      "description": "Maximum acceptable accuracy drop",
+      "value": "0.05"
+    },
+    "PROMETHEUS_PORT": {
+      "description": "Port for Prometheus metrics server",
+      "value": "8000"
+    },
+    "LOG_LEVEL": {
+      "description": "Logging level (DEBUG, INFO, WARNING, ERROR)",
+      "value": "INFO"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API key for embeddings and moderation (optional)",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

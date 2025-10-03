@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: drift-aware-monitor
+    env: python
+    repo: https://github.com/abu00134/Drift-Aware.git
+    buildCommand: pip install -r requirements.txt
+    startCommand: python drift_monitor.py
+    plan: free
+    healthCheckPath: /metrics
+    envVars:
+      - key: CHECK_INTERVAL_SECONDS
+        value: 900
+      - key: EMBEDDING_DIM
+        value: 1536
+      - key: EMBEDDING_COSINE_THRESHOLD
+        value: 0.1
+      - key: REFUSAL_RATE_THRESHOLD
+        value: 0.05
+      - key: TOXICITY_RATE_THRESHOLD
+        value: 0.02
+      - key: ACCURACY_DROP_POINTS
+        value: 0.05
+      - key: PROMETHEUS_PORT
+        value: 8000
+      - key: LOG_LEVEL
+        value: INFO
+
+  - type: pserv
+    name: drift-aware-postgres
+    env: postgresql
+    plan: free
+    initCommand: |
+      psql $DATABASE_URL -c "CREATE EXTENSION IF NOT EXISTS vector;"
+      psql $DATABASE_URL -f setup_database.sql
+    ipAllowList: []
